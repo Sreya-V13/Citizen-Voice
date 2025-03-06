@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Municipal Complaint System</title>
+    <!-- Add Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Add CSS -->
+    <style>
+        :root {
+            --nude-light: #F5EFE6;
+            --nude-medium: #E8DFD8;
+            --nude-dark: #DCCDC2;
+            --brown-text: #846C5B;
+            --brown-dark: #5C4B3F;
+            --white: #FFFFFF;
+            --shadow: rgba(92, 75, 63, 0.1);
+            --pending: #E6C89C;
+            --progress: #B8A99A;
+            --resolved: #A6B894;
+            --hover-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: var(--nude-light);
+            color: var(--brown-text);
+            line-height: 1.6;
+        }
+
+        .admin-dashboard {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .dashboard-header {
+            background: var(--white);
+            padding: 1.2rem 2.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 15px var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .dashboard-header h1 {
+            font-size: 1.6rem;
+            color: var(--brown-dark);
+            font-weight: 600;
+        }
+
+        .dashboard-header button {
+            background: var(--brown-dark);
+            color: var(--white);
+            padding: 0.6rem 1.2rem;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            transition: var(--hover-transition);
+            font-weight: 500;
+            font-size: 0.9rem;
+            min-width: 100px;
+            letter-spacing: 0.5px;
+        }
+
+        .dashboard-header button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px var(--shadow);
+            background: var(--brown-text);
+        }
+
+        .departments-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            padding: 2.5rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .department-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px var(--shadow);
+            cursor: pointer;
+            transition: var(--hover-transition);
+            text-align: center;
+            border: 2px solid transparent;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .department-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--nude-dark);
+            box-shadow: 0 8px 30px var(--shadow);
+        }
+
+        .department-icon {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .department-card h3 {
+            color: var(--brown-dark);
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .department-card p {
+            color: var(--brown-text);
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .department-header {
+            background: var(--white);
+            padding: 1.2rem 2rem;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            box-shadow: 0 2px 15px var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 90;
+        }
+
+        .department-header button {
+            background: transparent;
+            color: var(--brown-text);
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--hover-transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .department-header button:hover {
+            background: var(--nude-light);
+            transform: translateX(-5px);
+        }
+
+        .department-header h2 {
+            color: var(--brown-dark);
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        .department-header select {
+            padding: 0.6rem 1rem;
+            border: 2px solid var(--nude-medium);
+            border-radius: 8px;
+            background: var(--white);
+            color: var(--brown-text);
+            cursor: pointer;
+            transition: var(--hover-transition);
+            font-size: 0.9rem;
+            min-width: 150px;
+        }
+
+        .department-header select:focus {
+            outline: none;
+            border-color: var(--brown-text);
+            box-shadow: 0 0 0 3px var(--shadow);
+        }
+
+        .complaints-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 2.5rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .complaint-card {
+            background: var(--white);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px var(--shadow);
+            transition: var(--hover-transition);
+        }
+
+        .complaint-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px var(--shadow);
+        }
+
+        .complaint-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .complaint-info {
+            padding: 1.5rem;
+            background: var(--nude-light);
+        }
+
+        .complaint-info h4 {
+            color: var(--brown-dark);
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .complaint-info p {
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .status-controls {
+            margin-top: 1.5rem;
+        }
+
+        .status-controls select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid var(--nude-medium);
+            border-radius: 8px;
+            background: var(--white);
+            cursor: pointer;
+            transition: var(--hover-transition);
+            font-size: 0.9rem;
+        }
+
+        .status-controls select:focus {
+            outline: none;
+            border-color: var(--brown-text);
+            box-shadow: 0 0 0 3px var(--shadow);
+        }
+
+        .pending { border-left: 4px solid var(--pending); }
+        .in-progress { border-left: 4px solid var(--progress); }
+        .resolved { border-left: 4px solid var(--resolved); }
+
+        select.pending { color: #B67F2D; }
+        select.in-progress { color: #6B5B4C; }
+        select.resolved { color: #4A5D3F; }
+
+        @media (max-width: 768px) {
+            .dashboard-header,
+            .department-header {
+                padding: 1rem 1.5rem;
+            }
+
+            .dashboard-header h1 {
+                font-size: 1.3rem;
+            }
+
+            .departments-grid,
+            .complaints-grid {
+                padding: 1.5rem;
+                gap: 1.5rem;
+            }
+
+            .department-header {
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+
+            .department-header select {
+                width: 100%;
+            }
+        }
+
+        /* Loading State */
+        .loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        /* Empty State */
+        .no-complaints {
+            text-align: center;
+            padding: 3rem;
+            color: var(--brown-text);
+            font-size: 1.1rem;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .complaint-card {
+            animation: fadeIn 0.3s ease-out;
+        }
+    </style>
+    <!-- Add React and Babel -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+    <!-- Include the React component code directly in a script tag -->
+    <script type="text/babel">
+        // Demo complaints and utility functions
+        const demoComplaints = [
+            {
+                id: 1,
+                department: 'Public Works',
+                category: 'Road Maintenance',
+                description: 'Large pothole on main street',
+                location: 'Main Street, Block A',
+                date: '2024-03-15',
+                status: 'pending',
+                severity: 'high',
+                image: 'https://example.com/pothole.jpg'
+            },
+            {
+                id: 2,
+                department: 'Water & Sanitation',
+                category: 'Water Supply',
+                description: 'No water supply for 2 days',
+                location: 'Green Park Area',
+                date: '2024-03-16',
+                status: 'in-progress',
+                severity: 'high',
+                image: 'https://example.com/water.jpg'
+            },
+            // Add more demo complaints for each department
+        ];
+
+        // Initialize localStorage with demo complaints if empty
+        if (!localStorage.getItem('complaints')) {
+            localStorage.setItem('complaints', JSON.stringify(demoComplaints));
+        }
+
+        function AdminDashboard() {
+            const [selectedDepartment, setSelectedDepartment] = React.useState(null);
+            const [complaints, setComplaints] = React.useState([]);
+            const [statusFilter, setStatusFilter] = React.useState('all');
+
+            const departments = {
+                'Public Works': '🏗️',
+                'Water & Sanitation': '💧',
+                'Health & Safety': '🏥',
+                'Environment': '🌳',
+                'Emergency Services': '🚨',
+                'Municipal Services': '🏛️',
+                'Education': '📚',
+                'Transportation': '🚌',
+                'Social Welfare': '🤝'
+            };
+
+            // Load complaints on mount
+            React.useEffect(() => {
+                const loadComplaints = () => {
+                    const savedComplaints = JSON.parse(localStorage.getItem('complaints') || '[]');
+                    setComplaints(savedComplaints);
+                };
+
+                loadComplaints();
+                window.addEventListener('storage', loadComplaints);
+                return () => window.removeEventListener('storage', loadComplaints);
+            }, []);
+
+            // Update complaint status
+            const updateStatus = (complaintId, newStatus) => {
+                const updatedComplaints = complaints.map(complaint =>
+                    complaint.id === complaintId 
+                        ? { ...complaint, status: newStatus }
+                        : complaint
+                );
+                setComplaints(updatedComplaints);
+                localStorage.setItem('complaints', JSON.stringify(updatedComplaints));
+            };
+
+            // Filter complaints by department and status
+            const filteredComplaints = complaints.filter(complaint => {
+                if (selectedDepartment && complaint.department !== selectedDepartment) return false;
+                if (statusFilter !== 'all' && complaint.status !== statusFilter) return false;
+                return true;
+            });
+
+            return (
+                <div className="admin-dashboard">
+                    <header className="dashboard-header">
+                        <h1>Admin Dashboard</h1>
+                        <button onClick={() => window.location.href = 'index.html'}>Logout</button>
+                    </header>
+
+                    <main className="dashboard-main">
+                        {!selectedDepartment ? (
+                            // Department Selection View
+                            <div className="departments-grid">
+                                {Object.entries(departments).map(([dept, icon]) => {
+                                    const deptComplaints = complaints.filter(c => c.department === dept);
+                                    return (
+                                        <div 
+                                            key={dept}
+                                            className="department-card"
+                                            onClick={() => setSelectedDepartment(dept)}
+                                        >
+                                            <span className="department-icon">{icon}</span>
+                                            <h3>{dept}</h3>
+                                            <p>{deptComplaints.length} complaints</p>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        ) : (
+                            // Department Complaints View
+                            <div className="department-view">
+                                <div className="department-header">
+                                    <button onClick={() => setSelectedDepartment(null)}>
+                                        ← Back to Departments
+                                    </button>
+                                    <h2>{selectedDepartment}</h2>
+                                    <select 
+                                        value={statusFilter}
+                                        onChange={(e) => setStatusFilter(e.target.value)}
+                                    >
+                                        <option value="all">All Status</option>
+                                        <option value="pending">Pending</option>
+                                        <option value="in-progress">In Progress</option>
+                                        <option value="resolved">Resolved</option>
+                                    </select>
+                                </div>
+
+                                <div className="complaints-grid">
+                                    {filteredComplaints.map(complaint => (
+                                        <div 
+                                            key={complaint.id}
+                                            className={`complaint-card ${complaint.status}`}
+                                        >
+                                            {complaint.image && (
+                                                <img 
+                                                    src={complaint.image}
+                                                    alt="Complaint"
+                                                    className="complaint-image"
+                                                    onError={(e) => e.target.style.display = 'none'}
+                                                />
+                                            )}
+                                            <div className="complaint-info">
+                                                <h4>{complaint.category}</h4>
+                                                <p>{complaint.description}</p>
+                                                <p>📍 {complaint.location}</p>
+                                                <p>📅 {complaint.date}</p>
+                                                <div className="status-controls">
+                                                    <select
+                                                        value={complaint.status}
+                                                        onChange={(e) => updateStatus(complaint.id, e.target.value)}
+                                                        className={complaint.status}
+                                                    >
+                                                        <option value="pending">Pending</option>
+                                                        <option value="in-progress">In Progress</option>
+                                                        <option value="resolved">Resolved</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+                    </main>
+                </div>
+            );
+        }
+
+        ReactDOM.createRoot(document.getElementById('root')).render(<AdminDashboard />);
+    </script>
+</body>
+</html> 
